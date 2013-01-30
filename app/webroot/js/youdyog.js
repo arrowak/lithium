@@ -605,7 +605,8 @@ $(document).ready(function() {
 /* display whichs | on click of whichs button in manage whats tab */
 	$('#managewhatscontent').on('click' , '.manageWhichs', function(){
 		$('#manageWhatsBreadcrumbs').html('<li id="manageWhatsBreadcrumb"><a href="#whats">Whats</a><span class="divider">/</span></li><li id="manageWhichsBreadcrumb" class="active">'+$(this).attr('title')+'<span class="divider">/</span></li>');
-		$.post('/admin/getWhichs',{id : $(this).attr('id')},function(data){
+		window.location.href = "whats/"+$(this).attr('data-name')+"/whichs";
+		$.post('/admin/getWhichs',{whatname : $(this).attr('data-name')},function(data){
 			var newdata = jQuery.parseJSON(data);
 			console.log(newdata);
 		});

@@ -93,13 +93,14 @@ class AdminController extends \lithium\action\Controller
 	
 	public function getWhichs(){
 		$whatName = $_POST['whatname'];
-		$whats = Whats::getWhats('all',array('conditions' => array('name' => $whatName,'status' => '1','whichs.status' => '1'), 'fields' => array('whichs')));
+		$whats = Whats::getWhats('all',array('conditions' => array('name' => $whatName,'status' => '1','whichs' => array('$elemMatch' => array('status' => '1'))), 'fields' => array('whichs')));
 		$whichsArray = array();
 
 		foreach($whats as $what)
 		{
 			foreach($what['whichs'] as $which)
 			{				
+					if($which['status'] != "0")
 					array_push($whichsArray,array('id' => $what['_id'],'name' => $which['name']));				
 			}
 			
@@ -137,7 +138,7 @@ class AdminController extends \lithium\action\Controller
 	public function deleteWhich(){
 		$whatId = $_POST['id'];
 		$whichName = $_POST['name'];
-		$result = Whats::updateWhat(array('whichs.status' => '0'),array('_id' => new \MongoId($whatId),'whichs.name' => $whichName));
+		$result = Whats::updateWhat(array('whichs.$.status' => '0'),array('_id' => new \MongoId($whatId),'whichs' => array('$elemMatch' => array('name' => $whichName))));
 		if($result)
 		{
 			return '1';
@@ -206,6 +207,20 @@ class AdminController extends \lithium\action\Controller
 		}
 	}
 	
+	public function editWhich(){
+		$whatId = $_POST['id'];
+		$whichName = $_POST['name'];
+		$whichOldName = $_POST['oldName'];
+		$result = Whats::updateWhat(array('whichs.$.name' => $whichName),array('_id' => new \MongoId($whatId),'whichs' => array('$elemMatch' => array('name' => $whichName))));
+		if($result)
+		{
+			return '1';
+		}
+		else
+		{
+			return '0';
+		}
+	}
 	
 	public function createWhich(){
 		$whichName = $_POST['name'];

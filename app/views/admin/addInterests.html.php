@@ -134,3 +134,21 @@
   <div id="alertCreatWhich"></div>
   </div>
 </div>
+
+<!-- Modal edit Whichs -->
+<div id="editWhichModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 id="myModalLabel">Rename Which</h4>
+  </div>
+  <div class="modal-body">
+  <center>
+    <form id="frmEditWhich" class="frmEditWhich">
+    				<input type="text" id="txtEditWhichName" class="txtEditWhichName" placeholder="Enter Which Name" style="display : block;" />
+    				<input type="submit" class="btn btn-success" data-dismiss="modal" aria-hidden="true" value="Submit" id="editWhichSubmit" />
+    </form>
+  </div>
+  <div class="modal-footer">
+  	 <div id="alertEditWhich"></div>
+  </div>
+</div>
