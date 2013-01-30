@@ -11,7 +11,7 @@ class Hows extends \lithium\data\Model {
 	
 	/* for retrieval from hows collection */
 	public function getHows($type,$options){					
-		$hows = Hows::find('all');
+		$hows = Hows::find($type,$options);
 		return $hows;
 	}
 	

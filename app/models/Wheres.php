@@ -11,7 +11,7 @@ class Wheres extends \lithium\data\Model {
 	
 	/* for retrieval from wheres collection */
 	public function getWheres($type,$options){					
-		$wheres = Wheres::find($type);
+		$wheres = Wheres::find($type,$options);
 		return $wheres;
 	}
 	

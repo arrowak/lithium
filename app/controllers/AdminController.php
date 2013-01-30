@@ -61,11 +61,14 @@ class AdminController extends \lithium\action\Controller
 	}
 	
 	public function addInterests(){
-		
+		if($_SESSION['role'] != "admin")
+		{
+			return $this->redirect('User::profile');
+		}
 	}
 	
 	public function getHows(){
-		$hows = Hows::getHows('all',null);
+		$hows = Hows::getHows('all',array('conditions' => array('status' => '1')));
 		$howsArray = array();
 		
 		foreach($hows as $how)
@@ -77,7 +80,7 @@ class AdminController extends \lithium\action\Controller
 	}
 	
 	public function getWheres(){
-		$wheres = Wheres::getWheres('all',null);
+		$wheres = Wheres::getWheres('all',array('conditions' => array('status' => '1')));
 		$wheresArray = array();
 		
 		foreach($wheres as $where)
@@ -90,7 +93,7 @@ class AdminController extends \lithium\action\Controller
 	
 	public function deleteHow(){
 		$howId = $_POST['id'];
-		$result = Hows::deleteHow(array('_id' => new \MongoId($howId)));
+		$result = Hows::updateHow(array('status' => '0'),array('_id' => new \MongoId($howId)));
 		if($result)
 		{
 			return '1';
@@ -103,7 +106,7 @@ class AdminController extends \lithium\action\Controller
 	
 	public function deleteWhere(){
 		$whereId = $_POST['id'];
-		$result = Wheres::deleteWhere(array('_id' => new \MongoId($whereId)));
+		$result = Wheres::updateWhere(array('status' => '0'),array('_id' => new \MongoId($whereId)));
 		if($result)
 		{
 			return '1';
@@ -116,7 +119,7 @@ class AdminController extends \lithium\action\Controller
 	
 	public function createHow(){
 		$howName = $_POST['name'];
-		$result = Hows::create(array('name' => $howName))->save();
+		$result = Hows::create(array('name' => $howName,'status' => '1'))->save();
 		
 		if($result)
 		{
@@ -130,7 +133,7 @@ class AdminController extends \lithium\action\Controller
 	
 	public function createWhere(){
 		$whereName = $_POST['name'];
-		$result = Wheres::create(array('name' => $whereName))->save();
+		$result = Wheres::create(array('name' => $whereName,'status' => '1'))->save();
 		
 		if($result)
 		{

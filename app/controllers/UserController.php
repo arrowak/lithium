@@ -46,10 +46,10 @@ class UserController extends \lithium\action\Controller {
 		else
 		{
 			$interestsArray = array();
-			$hows = Hows::getHows('all',null);
-			$whats = Whats::getWhats('all',null);
-			$whichs = Whichs::getWhichs('all',null);
-			$wheres = Wheres::getWheres('all',null);
+			$hows = Hows::getHows('all',array());
+			$whats = Whats::getWhats('all',array());
+			$whichs = Whichs::getWhichs('all',array());
+			$wheres = Wheres::getWheres('all',array());
 			
 			array_push($interestsArray,$hows);
 			array_push($interestsArray,$whats);

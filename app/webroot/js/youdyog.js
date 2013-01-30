@@ -539,7 +539,7 @@ $(document).ready(function() {
 			}
 			for(var i=0;i<newdata.length;i++)
 			{
-				$('#managehowscontent').append('<div class="listDiv"> '+newdata[i]['name']+'<button title="Delete" style="margin-left : 20px;" class="btn pull-right deleteHow" id="'+newdata[i]['id']['$id']+'"> <i class="icon-trash"> </i> </button><button title="Edit" data-name="'+newdata[i]['name']+'"  class="btn pull-right editHow" id="'+newdata[i]['id']['$id']+'"> <i class="icon-edit"> </i> </button>');
+				$('#managehowscontent').append('<div class="listDiv"> '+newdata[i]['name']+'<button title="Delete" style="margin-left : 20px;" class="btn pull-right deleteHow" id="'+newdata[i]['id']['$id']+'"> <i class="icon-trash"> </i> </button><button title="Rename" data-name="'+newdata[i]['name']+'"  class="btn pull-right editHow" id="'+newdata[i]['id']['$id']+'"> <i class="icon-edit"> </i> </button>');
 			}
 		});
 	});
@@ -555,7 +555,7 @@ $(document).ready(function() {
 			}
 			for(var i=0;i<newdata.length;i++)
 			{
-				$('#managewherescontent').append('<div class="listDiv"> '+newdata[i]['name']+'<button title="Delete" style="margin-left : 20px;" class="btn pull-right deleteWhere" id="'+newdata[i]['id']['$id']+'"> <i class="icon-trash"> </i> </button><button title="Edit" data-name="'+newdata[i]['name']+'" class="btn pull-right editWhere" id="'+newdata[i]['id']['$id']+'"> <i class="icon-edit"> </i> </button>');
+				$('#managewherescontent').append('<div class="listDiv"> '+newdata[i]['name']+'<button title="Delete" style="margin-left : 20px;" class="btn pull-right deleteWhere" id="'+newdata[i]['id']['$id']+'"> <i class="icon-trash"> </i> </button><button title="Rename" data-name="'+newdata[i]['name']+'" class="btn pull-right editWhere" id="'+newdata[i]['id']['$id']+'"> <i class="icon-edit"> </i> </button>');
 			}
 		});
 	});

@@ -64,7 +64,7 @@
 <div id="editHowModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h4 id="myModalLabel">Edit How</h4>
+    <h4 id="myModalLabel">Rename How</h4>
   </div>
   <div class="modal-body">
   <center>
@@ -82,7 +82,7 @@
 <div id="editWhereModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h4 id="myModalLabel">Edit Where</h4>
+    <h4 id="myModalLabel">Rename Where</h4>
   </div>
   <div class="modal-body">
   <center>

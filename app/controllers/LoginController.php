@@ -49,7 +49,7 @@ class LoginController extends \lithium\action\Controller
 					}
 					else {
 						$_SESSION['role'] = "member";
-						return $this->redirect('User::index');
+						return $this->redirect('User::profile');
 					}
 				}			
 				else
