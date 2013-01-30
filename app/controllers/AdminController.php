@@ -5,39 +5,37 @@ session_start();
 
 use app\models\Users;
 use app\models\Hows;
-use app\models\Wheres;
-use app\models\Whichs;
 use app\models\Whats;
 
 use lithium\security\Auth;
 use lithium\g11n\Message;
 use lithium\storage\Session;
 
-class AdminController extends \lithium\action\Controller 
+class AdminController extends \lithium\action\Controller
 {
 	public function index()
 	{
 		if($_SESSION['loginSuccess'] != 1)
-			return $this->redirect('Login::login');
+		return $this->redirect('Login::login');
 	}
 
 	public function manage()
 	{
 		if($_SESSION['loginSuccess'] != 1)
-			return $this->redirect('Login::login');
-	
+		return $this->redirect('Login::login');
+
 		if(isset($_SESSION['role']) && $_SESSION['role'] != 'admin' )
 		{
 			return $this->redirect('User::index');
-		} 
-		else 
+		}
+		else
 		{
 			$temp = $this->request->data;
-			if($temp) 
+			if($temp)
 			{
-			  // var_dump($temp);
-			  // $users = Users::first(array('conditions' => 'user_email'=>$temp['user_email']));
-			  $users = Users::first(array('conditions' => array('email'=>$temp['email'])));
+				// var_dump($temp);
+				// $users = Users::first(array('conditions' => 'user_email'=>$temp['user_email']));
+				$users = Users::first(array('conditions' => array('email'=>$temp['email'])));
 				if(isset($users) && $users['email']==$temp['email']) {
 					return "Error: User with email id ".$temp['email']." already exists";
 				} else {
@@ -46,7 +44,7 @@ class AdminController extends \lithium\action\Controller
 					$temp['roles']=array(array('value'=>$temp['roles']));
 					$adm = Users::create($temp);
 					if($adm->save())
-						return $this->redirect('Admin::manage');
+					return $this->redirect('Admin::manage');
 					else return "Error: Unable to save user";
 				}
 			}
@@ -56,124 +54,174 @@ class AdminController extends \lithium\action\Controller
 	public function success()
 	{
 		if($_SESSION['loginSuccess'] != 1)
-			return $this->redirect('Login::login');
-				
+		return $this->redirect('Login::login');
+
 	}
-	
+
 	public function addInterests(){
 		if($_SESSION['role'] != "admin")
 		{
 			return $this->redirect('User::profile');
 		}
+		$args = $this->request->params['args'];
+		return compact('args');
 	}
-	
+
 	public function getHows(){
 		$hows = Hows::getHows('all',array('conditions' => array('status' => '1')));
 		$howsArray = array();
-		
+
 		foreach($hows as $how)
 		{
 			array_push($howsArray,array('name' => $how['name'],'id' => $how['_id']));
 		}
-		
+
 		return json_encode($howsArray);
 	}
-	
-	public function getWheres(){
-		$wheres = Wheres::getWheres('all',array('conditions' => array('status' => '1')));
-		$wheresArray = array();
-		
-		foreach($wheres as $where)
+
+	public function getWhats(){
+		$whats = Whats::getWhats('all',array('conditions' => array('status' => '1')));
+		$whatsArray = array();
+
+		foreach($whats as $what)
 		{
-			array_push($wheresArray,array('name' => $where['name'],'id' => $where['_id']));
+			array_push($whatsArray,array('name' => $what['name'],'id' => $what['_id']));
 		}
-		
-		return json_encode($wheresArray);
+
+		return json_encode($whatsArray);
 	}
 	
+	public function getWhichs(){
+		$whatName = $_POST['whatname'];
+		$whats = Whats::getWhats('all',array('conditions' => array('name' => $whatName,'status' => '1','whichs.status' => '1'), 'fields' => array('whichs')));
+		$whichsArray = array();
+
+		foreach($whats as $what)
+		{
+			foreach($what['whichs'] as $which)
+			{				
+					array_push($whichsArray,array('id' => $what['_id'],'name' => $which['name']));				
+			}
+			
+		}
+
+		return json_encode($whichsArray);
+	}
+
 	public function deleteHow(){
 		$howId = $_POST['id'];
 		$result = Hows::updateHow(array('status' => '0'),array('_id' => new \MongoId($howId)));
 		if($result)
 		{
 			return '1';
-		} 
+		}
 		else
 		{
 			return '0';
 		}
 	}
-	
-	public function deleteWhere(){
-		$whereId = $_POST['id'];
-		$result = Wheres::updateWhere(array('status' => '0'),array('_id' => new \MongoId($whereId)));
+
+	public function deleteWhat(){
+		$whatId = $_POST['id'];
+		$result = Whats::updateWhat(array('status' => '0'),array('_id' => new \MongoId($whatId)));
 		if($result)
 		{
 			return '1';
-		} 
+		}
 		else
 		{
 			return '0';
 		}
 	}
 	
+	public function deleteWhich(){
+		$whatId = $_POST['id'];
+		$whichName = $_POST['name'];
+		$result = Whats::updateWhat(array('whichs.status' => '0'),array('_id' => new \MongoId($whatId),'whichs.name' => $whichName));
+		if($result)
+		{
+			return '1';
+		}
+		else
+		{
+			return '0';
+		}
+	}
+
 	public function createHow(){
 		$howName = $_POST['name'];
 		$result = Hows::create(array('name' => $howName,'status' => '1'))->save();
-		
+
 		if($result)
 		{
 			return '1';
-		} 
+		}
 		else
 		{
 			return '0';
 		}
 	}
-	
-	public function createWhere(){
-		$whereName = $_POST['name'];
-		$result = Wheres::create(array('name' => $whereName,'status' => '1'))->save();
-		
+
+	public function createWhat(){
+		$whatName = $_POST['name'];
+		$result = Whats::create(array('name' => $whatName,'status' => '1','whichs' => array()))->save();
+
 		if($result)
 		{
 			return '1';
-		} 
+		}
 		else
 		{
 			return '0';
 		}
 	}
-	
-	public function editWhere(){
-		$whereName = $_POST['name'];
+
+	public function editWhat(){
+		$whatName = $_POST['name'];
 		$id = $_POST['id'];
-		$result = Wheres::updateWhere(array('name' => $whereName),array('_id' => new \MongoId($id)));
-		
+		$result = Whats::updateWhat(array('name' => $whatName),array('_id' => new \MongoId($id)));
+
 		if($result)
 		{
 			return '1';
-		} 
+		}
 		else
 		{
 			return '0';
 		}
 	}
-	
+
 	public function editHow(){
 		$howName = $_POST['name'];
 		$id = $_POST['id'];
 		$result = Hows::updateHow(array('name' => $howName),array('_id' => new \MongoId($id)));
-		
+
 		if($result)
 		{
 			return '1';
-		} 
+		}
 		else
 		{
 			return '0';
 		}
 	}
+	
+	
+	public function createWhich(){
+		$whichName = $_POST['name'];
+		$whatName = $_POST['whatname'];
+		$result = Whats::updateWhat(array('$push' => array('whichs' => array('name' => $whichName,'status' => '1'))), array('name' => $whatName));
+
+		if($result)
+		{
+			return '1';
+		}
+		else
+		{
+			return '0';
+		}
+	}
+	
 }
 
 

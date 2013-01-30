@@ -9,7 +9,7 @@ class Whats extends \lithium\data\Model {
 	
 	/* for retrieval from whats collection */
 	public function getWhats($type,$options){					
-		$hows = Whats::find('all');
+		$hows = Whats::find($type,$options);
 		return $hows;
 	}
 	

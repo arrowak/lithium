@@ -70,7 +70,7 @@ $(document).ready(function(){
 			return false;	
 		});	
 		
-		// add user to a group		
+		// add user to a group
 		$( '.groups' ).on( 'click', '.groupItem', function () { 
 			var userid = $(this).closest('div.groups').attr('data-id');
 			var groupName = $(this).attr('id');
@@ -95,7 +95,7 @@ $(document).ready(function(){
 			return true;
 		});
 		
-		//get members of a public group
+		// get members of a public group
 		$('#groupsList').on('click', '.publicGroup',function(){
 			var id = $(this).attr('id');
 			var groupName = $(this).attr('data-name');
@@ -109,7 +109,7 @@ $(document).ready(function(){
 			return false;
 		});
 		
-		// get the searched groups 
+		// get the searched groups
 		$('#txtSearchGroup').submit(function(){
 			var groupName = $(this).val();
 			alert(groupName);
@@ -191,7 +191,7 @@ $(document).ready(function(){
 
 /* integration_25-01-13 | login, register | Sumanth, Pavan */
 
-// For alternate Email 
+// For alternate Email
 
 $(document).ready(function(){
 		 $("#emailshow").click(function(){
@@ -396,11 +396,11 @@ var result = false;
 	
 }
 
-//To validate User Name length .... (minimum requirment)
+// To validate User Name length .... (minimum requirment)
 
 
 
-// password Strength ..... 
+// password Strength .....
 
 function passwordStrength(password,passwordStrength,errorField)
 {
@@ -414,19 +414,19 @@ function passwordStrength(password,passwordStrength,errorField)
 
  var score   = 0;
 
- //if password bigger than 6 give 1 point
+ // if password bigger than 6 give 1 point
  if (password.length > 6) score++;
  
- //if password has both lower and uppercase characters give 1 point 
+ // if password has both lower and uppercase characters give 1 point
  if ( ( password.match(/[a-z]/) ) && ( password.match(/[A-Z]/) ) ) score++;
 
- //if password has at least one number give 1 point
+ // if password has at least one number give 1 point
  if (password.match(/\d+/)) score++;
 
- //if password has at least one special caracther give 1 point
+ // if password has at least one special caracther give 1 point
  if ( password.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/) ) score++;
 
- //if password bigger than 12 give another 1 point
+ // if password bigger than 12 give another 1 point
  if (password.length > 10) score++;
 
   passwordStrength.innerHTML = desc[score];
@@ -437,7 +437,8 @@ function passwordStrength(password,passwordStrength,errorField)
  
 }
 
-// Recaptcha Colors / Custimization ... use white, red, or remove script for classic use
+// Recaptcha Colors / Custimization ... use white, red, or remove script for
+// classic use
 
 var RecaptchaOptions = {
     theme : 'white'
@@ -465,7 +466,7 @@ var RecaptchaOptions = {
  return pass_comp;       
  } 
  
-// for phone number 
+// for phone number
 
 $(document).ready(function() {
     $("#txtcontactno").keydown(function(event) {
@@ -528,36 +529,87 @@ $(document).ready(function() {
 		return false;
 	});
 	
-/* manage interests | on click of manage hows tab */
-	$('#managehowstab').ready(function(){
-		$.post('/admin/getHows',{},function(data){
-			var newdata = jQuery.parseJSON(data);
-			$('#managehowscontent').html('');
-			if(newdata.length == 0)
-			{
-				$('#managehowscontent').append('<center> There are no items to display. </center>');
-			}
-			for(var i=0;i<newdata.length;i++)
-			{
-				$('#managehowscontent').append('<div class="listDiv"> '+newdata[i]['name']+'<button title="Delete" style="margin-left : 20px;" class="btn pull-right deleteHow" id="'+newdata[i]['id']['$id']+'"> <i class="icon-trash"> </i> </button><button title="Rename" data-name="'+newdata[i]['name']+'"  class="btn pull-right editHow" id="'+newdata[i]['id']['$id']+'"> <i class="icon-edit"> </i> </button>');
-			}
-		});
+/* manage interests | manage tabs */
+	$('#myTab').ready(function(){
+		if($('#enabled').val() == "hows")
+		{
+			$('#managehowsLink').attr('class','active');
+			$('#managehows').attr('class','tab-pane fade in active');
+			$('#managewhatsLink').attr('class','');
+			$('#managewhats').attr('class','tab-pane fade');
+			$.post('/admin/getHows',{},function(data){
+				var newdata = jQuery.parseJSON(data);
+				$('#managehowscontent').html('');
+				if(newdata.length == 0)
+				{
+					$('#managehowscontent').append('<center> There are no items to display. </center>');
+				}
+				for(var i=0;i<newdata.length;i++)
+				{
+					$('#managehowscontent').append('<div class="listDiv"> '+newdata[i]['name']+'<button title="Delete" style="margin-left : 20px;" class="btn pull-right deleteHow" id="'+newdata[i]['id']['$id']+'"> <i class="icon-trash"> </i> </button><button title="Rename" data-name="'+newdata[i]['name']+'"  class="btn pull-right editHow" id="'+newdata[i]['id']['$id']+'"> <i class="icon-edit"> </i> </button>');
+				}
+			});
+		}
+		else if($('#enabled').val() == "whats" || $('#enabled').val() == "/")
+		{
+			$('#managehowsLink').attr('class','');
+			$('#managehows').attr('class','tab-pane fade');
+			$('#managewhatsLink').attr('class','active');
+			$('#managewhats').attr('class','tab-pane fade  in active');
+			$.post('/admin/getWhats',{},function(data){
+				var newdata = jQuery.parseJSON(data);
+				$('#managewhatscontent').html('');
+				if(newdata.length == 0)
+				{
+					$('#managewhatscontent').append('<center> There are no items to display. </center>');
+				}
+				for(var i=0;i<newdata.length;i++)
+				{
+					$('#managewhatscontent').append('<div class="listDiv"> '+newdata[i]['name']+'<button title="Delete" style="margin-left : 20px;" class="btn pull-right deleteWhat" id="'+newdata[i]['id']['$id']+'"> <i class="icon-trash"> </i> </button><button title="Rename" data-name="'+newdata[i]['name']+'" style="margin-left : 20px;" class="btn pull-right editWhat" id="'+newdata[i]['id']['$id']+'"> <i class="icon-edit"> </i> </button><a href="#wheresFor'+newdata[i]['name']+'" title="Wheres for '+newdata[i]['name']+'" data-name="'+newdata[i]['name']+'" style="margin-left : 20px;" class="btn pull-right manageWheres" id="'+newdata[i]['id']['$id']+'"> Wheres </a><a href="#whichsFor'+newdata[i]['name']+'" title="Whichs for '+newdata[i]['name']+'" data-name="'+newdata[i]['name']+'" class="btn pull-right manageWhichs" id="'+newdata[i]['id']['$id']+'"> Whichs </a>');
+				}
+			});
+		}
+		else
+		{
+			var splitted =  $('#enabled').val().split("/");
+			var whatname = splitted[1];
+			
+			$('#managehowsLink').attr('class','');
+			$('#managehows').attr('class','tab-pane fade');
+			$('#managewhatsLink').attr('class','active');
+			$('#managewhats').attr('class','tab-pane fade');
+			$('#managewhichs').attr('class','tab-pane fade  in active');
+			$.post('/admin/getWhichs',{whatname : whatname},function(data){
+				var newdata = jQuery.parseJSON(data);
+				$('#managewhichscontent').html('');
+				if(newdata.length == 0)
+				{
+					$('#managewhichscontent').append('<center> There are no items to display. </center>');
+				}
+				for(var i=0;i<newdata.length;i++)
+				{
+					$('#managewhichscontent').append('<div class="listDiv"> '+newdata[i]['name']+'<button title="Delete" data-name="'+newdata[i]['name']+'" style="margin-left : 20px;" class="btn pull-right deleteWhich" id="'+newdata[i]['id']['$id']+'"> <i class="icon-trash"> </i> </button><button title="Rename" data-name="'+newdata[i]['name']+'" data-name="'+newdata[i]['name']+'" style="margin-left : 20px;" class="btn pull-right editWhich" id="'+newdata[i]['id']['$id']+'"> <i class="icon-edit"> </i> </button>');
+				}
+			});
+		}
 	});
 	
-/* manage interests | on click of manage wheres tab */
-	$('#managewherestab').ready(function(){
-		$.post('/admin/getWheres',{},function(data){
+/* manage interests | change url according to tabs clicked */
+	$('#managehowsLink').click(function(){
+		window.location.href = "/admin/managecategories/hows";
+	});
+	$('#managewhatsLink').click(function(){
+		window.location.href = "/admin/managecategories/whats";
+	});
+	
+/* display whichs | on click of whichs button in manage whats tab */
+	$('#managewhatscontent').on('click' , '.manageWhichs', function(){
+		$('#manageWhatsBreadcrumbs').html('<li id="manageWhatsBreadcrumb"><a href="#whats">Whats</a><span class="divider">/</span></li><li id="manageWhichsBreadcrumb" class="active">'+$(this).attr('title')+'<span class="divider">/</span></li>');
+		$.post('/admin/getWhichs',{id : $(this).attr('id')},function(data){
 			var newdata = jQuery.parseJSON(data);
-			$('#managewherescontent').html('');
-			if(newdata.length == 0)
-			{
-				$('#managewherescontent').append('<center> There are no items to display. </center>');
-			}
-			for(var i=0;i<newdata.length;i++)
-			{
-				$('#managewherescontent').append('<div class="listDiv"> '+newdata[i]['name']+'<button title="Delete" style="margin-left : 20px;" class="btn pull-right deleteWhere" id="'+newdata[i]['id']['$id']+'"> <i class="icon-trash"> </i> </button><button title="Rename" data-name="'+newdata[i]['name']+'" class="btn pull-right editWhere" id="'+newdata[i]['id']['$id']+'"> <i class="icon-edit"> </i> </button>');
-			}
+			console.log(newdata);
 		});
+		return false;
 	});
 
 /* delete how | on click of delete button in manage hows tab */
@@ -567,9 +619,16 @@ $(document).ready(function() {
 		});
 	});
 
-/* delete where | on click of delete button in manage wheres tab */
-	$('#managewherescontent').on('click' , '.deleteWhere', function(){
-		$.post('/admin/deleteWhere',{id : $(this).attr('id')},function(data){
+/* delete what | on click of delete button in manage whats tab */
+	$('#managewhatscontent').on('click' , '.deleteWhat', function(){
+		$.post('/admin/deleteWhat',{id : $(this).attr('id')},function(data){
+			location.reload();
+		});
+	});
+
+/* delete which | on click of delete button in manage whichs tab */
+	$('#managewhichscontent').on('click' , '.deleteWhich', function(){
+		$.post('/admin/deleteWhich',{id : $(this).attr('id'),name : $(this).attr('data-name')},function(data){
 			location.reload();
 		});
 	});
@@ -636,59 +695,59 @@ $(document).ready(function() {
 	});
 	
 	
-	/* create new where | on click of + button in manage wheres tab */
-	$('#frmNewWhere').submit(function(){
-		var name = $('#txtWhereName').val();
+	/* create new what | on click of + button in manage whats tab */
+	$('#frmNewWhat').submit(function(){
+		var name = $('#txtWhatName').val();
 		if(name == "")
 		{
-			$('#alertCreatWhere').html('<strong> Oops! </strong> Did you forget to enter the name?');
-			$('#alertCreateWhere').css('display','block');
-			$('#alertCreateWhere').attr('class','alert alert-danger');
-			$('#alertCreateWhere').hide().fadeIn(300);
+			$('#alertCreatWhat').html('<strong> Oops! </strong> Did you forget to enter the name?');
+			$('#alertCreateWhat').css('display','block');
+			$('#alertCreateWhat').attr('class','alert alert-danger');
+			$('#alertCreateWhat').hide().fadeIn(300);
 			return false;
 		}
 		else
 		{
-			$.post('/admin/createWhere',{name : name}, function(data){
+			$.post('/admin/createWhat',{name : name}, function(data){
 				if(data == '1')
 				{
 					location.reload();
 				}
 				else
 				{
-					$('#alertCreatWhere').html('<strong> Oops! </strong> Something went wrong while creating Where. Please try again later.');
-					$('#alertCreateWhere').css('display','block');
-					$('#alertCreateWhere').attr('class','alert alert-danger');
-					$('#alertCreateWhere').hide().fadeIn(300);
+					$('#alertCreatWhat').html('<strong> Oops! </strong> Something went wrong while creating What. Please try again later.');
+					$('#alertCreateWhat').css('display','block');
+					$('#alertCreateWhat').attr('class','alert alert-danger');
+					$('#alertCreateWhat').hide().fadeIn(300);
 	
 				}
 			});
 		}
 	});
 	
-	$('#createWhereSubmit').click(function(){
-		var name = $('#txtWhereName').val();
+	$('#createWhatSubmit').click(function(){
+		var name = $('#txtWhatName').val();
 		if(name == "")
 		{
-			$('#alertCreatWhere').html('<strong> Oops! </strong> Did you forget to enter the name?');
-			$('#alertCreateWhere').attr('class','alert alert-danger');
-			$('#alertCreateWhere').css('display','block');
-			$('#alertCreateWhere').hide().fadeIn(300);
+			$('#alertCreatWhat').html('<strong> Oops! </strong> Did you forget to enter the name?');
+			$('#alertCreateWhat').attr('class','alert alert-danger');
+			$('#alertCreateWhat').css('display','block');
+			$('#alertCreateWhat').hide().fadeIn(300);
 			return false;
 		}
 		else
 		{
-			$.post('/admin/createWhere',{name : name}, function(data){
+			$.post('/admin/createWhat',{name : name}, function(data){
 				if(data == '1')
 				{
 					location.reload();
 				}
 				else
 				{
-					$('#alertCreatWhere').html('<strong> Oops! </strong> Something went wrong while creating Where. Please try again later.');
-					$('#alertCreateWhere').attr('style','display : block');
-					$('#alertCreateWhere').attr('class','alert alert-danger');
-					$('#alertCreateWhere').hide().fadeIn(500);
+					$('#alertCreatWhat').html('<strong> Oops! </strong> Something went wrong while creating What. Please try again later.');
+					$('#alertCreateWhat').attr('style','display : block');
+					$('#alertCreateWhat').attr('class','alert alert-danger');
+					$('#alertCreateWhat').hide().fadeIn(500);
 	
 				}
 			});
@@ -704,11 +763,11 @@ $(document).ready(function() {
 	
 	});
 	
-/* on click of edit where button in manage interests page */	
-	$('#managewherescontent').on('click', '.editWhere', function(){
-		$('#txtEditWhereName').val($(this).attr('data-name'));
+/* on click of edit what button in manage interests page */	
+	$('#managewhatscontent').on('click', '.editWhat', function(){
+		$('#txtEditWhatName').val($(this).attr('data-name'));
 		$('#editId').val($(this).attr('id'));
-		$('#editWhereModal').modal('show');
+		$('#editWhatModal').modal('show');
 	
 	});
 	
@@ -772,59 +831,123 @@ $(document).ready(function() {
 		return false;
 	});
 	
-/* on submit of edit where form */
-	$('#frmEditWhere').submit(function(){
-		var name = $('#txtEditWhereName').val();
+/* on submit of edit what form */
+	$('#frmEditWhat').submit(function(){
+		var name = $('#txtEditWhatName').val();
 		if(name == "")
 		{
-			$('#alertEditWhere').html('<strong> Oops! </strong> Did you forget to enter the name?');
-			$('#alertEditWhere').css('display','block');
-			$('#alertEditWhere').attr('class','alert alert-danger');
-			$('#alertEditWhere').hide().fadeIn(300);
+			$('#alertEditWhat').html('<strong> Oops! </strong> Did you forget to enter the name?');
+			$('#alertEditWhat').css('display','block');
+			$('#alertEditWhat').attr('class','alert alert-danger');
+			$('#alertEditWhat').hide().fadeIn(300);
 			return false;
 		}
 		else
 		{
-			$.post('/admin/editWhere',{name : name,id: $('#editId').val()}, function(data){
+			$.post('/admin/editWhat',{name : name,id: $('#editId').val()}, function(data){
 				if(data == '1')
 				{
 					location.reload();
 				}
 				else
 				{
-					$('#alertEditWhere').html('<strong> Oops! </strong> Something went wrong while Editing Where. Please try again later.');
-					$('#alertEditWhere').css('display','block');
-					$('#alertEditWhere').attr('class','alert alert-danger');
-					$('#alertEditWhere').hide().fadeIn(300);
+					$('#alertEditWhat').html('<strong> Oops! </strong> Something went wrong while Editing What. Please try again later.');
+					$('#alertEditWhat').css('display','block');
+					$('#alertEditWhat').attr('class','alert alert-danger');
+					$('#alertEditWhat').hide().fadeIn(300);
 	
 				}
 			});
 		}
 	});
 	
-	$('#editWhereSubmit').click(function(){
-		var name = $('#txtEditWhereName').val();
+	$('#editWhatSubmit').click(function(){
+		var name = $('#txtEditWhatName').val();
 		if(name == "")
 		{
-			$('#alertEditWhere').html('<strong> Oops! </strong> Did you forget to enter the name?');
-			$('#alertEditWhere').attr('class','alert alert-danger');
-			$('#alertEditWhere').css('display','block');
-			$('#alertEditWhere').hide().fadeIn(300);
+			$('#alertEditWhat').html('<strong> Oops! </strong> Did you forget to enter the name?');
+			$('#alertEditWhat').attr('class','alert alert-danger');
+			$('#alertEditWhat').css('display','block');
+			$('#alertEditWhat').hide().fadeIn(300);
 			return false;
 		}
 		else
 		{
-			$.post('/admin/editWhere',{name : name,id: $('#editId').val()}, function(data){
+			$.post('/admin/editWhat',{name : name,id: $('#editId').val()}, function(data){
 				if(data == '1')
 				{
 					location.reload();
 				}
 				else
 				{
-					$('#alertEditWhere').html('<strong> Oops! </strong> Something went wrong while editing Where. Please try again later.');
-					$('#alertEditWhere').attr('style','display : block');
-					$('#alertEditWhere').attr('class','alert alert-danger');
-					$('#alertEditWhere').hide().fadeIn(500);
+					$('#alertEditWhat').html('<strong> Oops! </strong> Something went wrong while editing What. Please try again later.');
+					$('#alertEditWhat').attr('style','display : block');
+					$('#alertEditWhat').attr('class','alert alert-danger');
+					$('#alertEditWhat').hide().fadeIn(500);
+	
+				}
+			});
+		}
+		return false;
+	});
+	
+	/* create new which | on click of + button in manage whichs tab */
+	$('#frmNewWhich').submit(function(){
+		var name = $('#txtWhichName').val();
+		if(name == "")
+		{
+			$('#alertCreateWhich').html('<strong> Oops! </strong> Did you forget to enter the name?');
+			$('#alertCreateWhich').css('display','block');
+			$('#alertCreateWhich').attr('class','alert alert-danger');
+			$('#alertCreateWhich').hide().fadeIn(300);
+			return false;
+		}
+		else
+		{
+			var splitted =  $('#enabled').val().split("/");
+			var whatname = splitted[1];
+			$.post('/admin/createWhich',{name : name,whatname : whatname}, function(data){
+				if(data == '1')
+				{
+					location.reload();
+				}
+				else
+				{
+					$('#alertCreateWhich').html('<strong> Oops! </strong> Something went wrong while creating Which. Please try again later.');
+					$('#alertCreateWhich').css('display','block');
+					$('#alertCreateWhich').attr('class','alert alert-danger');
+					$('#alertCreateWhich').hide().fadeIn(300);
+	
+				}
+			});
+		}
+	});
+	
+	$('#createWhichSubmit').click(function(){
+		var name = $('#txtWhichName').val();
+		if(name == "")
+		{
+			$('#alertCreateWhich').html('<strong> Oops! </strong> Did you forget to enter the name?');
+			$('#alertCreateWhich').attr('class','alert alert-danger');
+			$('#alertCreateWhich').css('display','block');
+			$('#alertCreateWhich').hide().fadeIn(300);
+			return false;
+		}
+		else
+		{
+			var splitted =  $('#enabled').val().split("/");
+			var whatname = splitted[1];
+			$.post('/admin/createWhich',{name : name,whatname : whatname}, function(data){
+				if(data == '1')
+				{
+					location.reload();
+				}
+				else
+				{
+					$('#alertCreateWhich').html('<strong> Oops! </strong> Something went wrong while creating Which. Please try again later.');
+					$('#alertCreateWhich').attr('style','display : block');
+					$('#alertCreateWhich').attr('class','alert alert-danger');
+					$('#alertCreateWhich').hide().fadeIn(500);
 	
 				}
 			});

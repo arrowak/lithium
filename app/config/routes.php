@@ -89,11 +89,13 @@ Router::connect('/forgotpassword/{:args}','User::forgotpassword');
 Router::connect('/updatePassword', 'User::updatePassword');
 
 // routes for admin control for interests management
-Router::connect('/admin/managecategories','Admin::addInterests');
+Router::connect('/admin/managecategories/{:args}','Admin::addInterests');
 Router::connect('/admin/getHows','Admin::getHows');
 Router::connect('/admin/getWheres','Admin::getWheres');
+Router::connect('/admin/getWhichs','Admin::getWhichs');
 Router::connect('/admin/deleteHow','Admin::deleteHow');
 Router::connect('/admin/deleteWhere','Admin::deleteWhere');
+Router::connect('/admin/deleteWhich','Admin::deleteWhich');
 Router::connect('/admin/createHow','Admin::createHow');
 Router::connect('/admin/createWhere','Admin::createWhere');
 Router::connect('/admin/editHow','Admin::editHow');
