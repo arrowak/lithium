@@ -33,14 +33,12 @@ class AdminController extends \lithium\action\Controller
 			$temp = $this->request->data;
 			if($temp)
 			{
-				// var_dump($temp);
-				// $users = Users::first(array('conditions' => 'user_email'=>$temp['user_email']));
 				$users = Users::first(array('conditions' => array('email'=>$temp['email'])));
 				if(isset($users) && $users['email']==$temp['email']) {
 					return "Error: User with email id ".$temp['email']." already exists";
 				} else {
 					$random = substr(number_format(time() * rand(),0,'',''),0,10);
-					$temp['uniqueno'] = $random;///substr($temp['user_email'],0,strpos($temp['user_email'],'@'))
+					$temp['uniqueno'] = $random;
 					$temp['roles']=array(array('value'=>$temp['roles']));
 					$adm = Users::create($temp);
 					if($adm->save())
@@ -90,7 +88,7 @@ class AdminController extends \lithium\action\Controller
 
 		return json_encode($whatsArray);
 	}
-	
+
 	public function getWhichs(){
 		$whatName = $_POST['whatname'];
 		$whats = Whats::getWhats('all',array('conditions' => array('name' => $whatName,'status' => '1','whichs' => array('$elemMatch' => array('status' => '1'))), 'fields' => array('whichs')));
@@ -99,16 +97,16 @@ class AdminController extends \lithium\action\Controller
 		foreach($whats as $what)
 		{
 			foreach($what['whichs'] as $which)
-			{				
-					if($which['status'] != "0")
-					array_push($whichsArray,array('id' => $what['_id'],'name' => $which['name']));				
+			{
+				if($which['status'] != "0")
+				array_push($whichsArray,array('id' => $what['_id'],'name' => $which['name']));
 			}
-			
+				
 		}
 
 		return json_encode($whichsArray);
 	}
-	
+
 	public function getWheres(){
 		$whatName = $_POST['whatname'];
 		$whats = Whats::getWhats('all',array('conditions' => array('name' => $whatName,'status' => '1','wheres' => array('$elemMatch' => array('status' => '1'))), 'fields' => array('wheres')));
@@ -117,11 +115,11 @@ class AdminController extends \lithium\action\Controller
 		foreach($whats as $what)
 		{
 			foreach($what['wheres'] as $where)
-			{				
-					if($where['status'] != "0")
-					array_push($wheresArray,array('id' => $what['_id'],'name' => $where['name']));				
+			{
+				if($where['status'] != "0")
+				array_push($wheresArray,array('id' => $what['_id'],'name' => $where['name']));
 			}
-			
+				
 		}
 
 		return json_encode($wheresArray);
@@ -152,7 +150,7 @@ class AdminController extends \lithium\action\Controller
 			return '0';
 		}
 	}
-	
+
 
 	public function createHow(){
 		$howName = $_POST['name'];
@@ -211,7 +209,7 @@ class AdminController extends \lithium\action\Controller
 			return '0';
 		}
 	}
-	
+
 	public function editWhich(){
 		$whatId = $_POST['id'];
 		$whichName = $_POST['name'];
@@ -226,11 +224,15 @@ class AdminController extends \lithium\action\Controller
 			return '0';
 		}
 	}
-	
+
 	public function createWhich(){
 		$whichName = $_POST['name'];
 		$whatName = $_POST['whatname'];
-		$result = Whats::updateWhat(array('$push' => array('whichs' => array('name' => $whichName,'status' => '1'))), array('name' => $whatName));
+		$date = new \DateTime();
+		$timestamp = $date->getTimestamp();
+		$toHash = $whatName.$timestamp;
+		$hashedId = hash('md4',$toHash);
+		$result = Whats::updateWhat(array('$push' => array('whichs' => array('name' => $whichName,'status' => '1','_id' => new \MongoId($hashedId)))), array('name' => $whatName));
 
 		if($result)
 		{
@@ -241,8 +243,8 @@ class AdminController extends \lithium\action\Controller
 			return '0';
 		}
 	}
-	
-	
+
+
 	public function deleteWhich(){
 		$whatId = $_POST['id'];
 		$whichName = $_POST['name'];
@@ -256,8 +258,8 @@ class AdminController extends \lithium\action\Controller
 			return '0';
 		}
 	}
-	
-	
+
+
 	public function editWhere(){
 		$whatId = $_POST['id'];
 		$whereName = $_POST['name'];
@@ -272,11 +274,15 @@ class AdminController extends \lithium\action\Controller
 			return '0';
 		}
 	}
-	
+
 	public function createWhere(){
 		$whereName = $_POST['name'];
 		$whatName = $_POST['whatname'];
-		$result = Whats::updateWhat(array('$push' => array('wheres' => array('name' => $whereName,'status' => '1'))), array('name' => $whatName));
+		$date = new \DateTime();
+		$timestamp = $date->getTimestamp();
+		$toHash = $whatName.$timestamp;
+		$hashedId = hash('md4',$toHash);
+		$result = Whats::updateWhat(array('$push' => array('wheres' => array('name' => $whereName,'status' => '1','_id' => new \MongoId($hashedId)))), array('name' => $whatName));
 
 		if($result)
 		{
@@ -287,8 +293,8 @@ class AdminController extends \lithium\action\Controller
 			return '0';
 		}
 	}
-	
-	
+
+
 	public function deleteWhere(){
 		$whatId = $_POST['id'];
 		$whereName = $_POST['name'];
@@ -302,7 +308,7 @@ class AdminController extends \lithium\action\Controller
 			return '0';
 		}
 	}
-	
+
 }
 
 

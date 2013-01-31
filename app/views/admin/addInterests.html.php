@@ -46,9 +46,11 @@
               	</div>
               	<div class="well" id="managewherescontent"></div>
               </div>
-    </div>
+    </div> <!-- end myTabContent div -->
+    
     <input type="hidden" id="editId" />
     <input type = "hidden" id="enabled" value = <?php if(count($args) == 1) echo $args[0]; else foreach($args as $arg) echo $arg."/"; ?> />
+    
 </div> <!-- end interestsWrapper div -->
 
 <!-- Modal create Hows -->

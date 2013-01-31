@@ -90,22 +90,27 @@ Router::connect('/updatePassword', 'User::updatePassword');
 
 // routes for admin control for interests management
 Router::connect('/admin/managecategories/{:args}','Admin::addInterests');
-Router::connect('/admin/getHows','Admin::getHows');
-Router::connect('/admin/getWhats','Admin::getWhats');
-Router::connect('/admin/getWheres','Admin::getWheres');
-Router::connect('/admin/getWhichs','Admin::getWhichs');
-Router::connect('/admin/deleteHow','Admin::deleteHow');
-Router::connect('/admin/deleteWhat','Admin::deleteWhat');
-Router::connect('/admin/deleteWhere','Admin::deleteWhere');
-Router::connect('/admin/deleteWhich','Admin::deleteWhich');
+	// routes for creating interests
 Router::connect('/admin/createHow','Admin::createHow');
 Router::connect('/admin/createWhere','Admin::createWhere');
 Router::connect('/admin/createWhat','Admin::createWhat');
 Router::connect('/admin/createWhich','Admin::createWhich');
+	// routes for editing interests
 Router::connect('/admin/editHow','Admin::editHow');
 Router::connect('/admin/editWhere','Admin::editWhere');
 Router::connect('/admin/editWhat','Admin::editWhat');
 Router::connect('/admin/editWhich','Admin::editWhich');
+	// routes for retrieving interests
+Router::connect('/admin/getHows','Admin::getHows');
+Router::connect('/admin/getWhats','Admin::getWhats');
+Router::connect('/admin/getWheres','Admin::getWheres');
+Router::connect('/admin/getWhichs','Admin::getWhichs');
+	// routes for deleting interests
+Router::connect('/admin/deleteHow','Admin::deleteHow');
+Router::connect('/admin/deleteWhat','Admin::deleteWhat');
+Router::connect('/admin/deleteWhere','Admin::deleteWhere');
+Router::connect('/admin/deleteWhich','Admin::deleteWhich');
+
 
 /**
  * Connect the rest of `PagesController`'s URLs. This will route URLs like `/pages/about` to
