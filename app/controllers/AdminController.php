@@ -108,6 +108,24 @@ class AdminController extends \lithium\action\Controller
 
 		return json_encode($whichsArray);
 	}
+	
+	public function getWheres(){
+		$whatName = $_POST['whatname'];
+		$whats = Whats::getWhats('all',array('conditions' => array('name' => $whatName,'status' => '1','wheres' => array('$elemMatch' => array('status' => '1'))), 'fields' => array('wheres')));
+		$wheresArray = array();
+
+		foreach($whats as $what)
+		{
+			foreach($what['wheres'] as $where)
+			{				
+					if($where['status'] != "0")
+					array_push($wheresArray,array('id' => $what['_id'],'name' => $where['name']));				
+			}
+			
+		}
+
+		return json_encode($wheresArray);
+	}
 
 	public function deleteHow(){
 		$howId = $_POST['id'];
@@ -135,19 +153,6 @@ class AdminController extends \lithium\action\Controller
 		}
 	}
 	
-	public function deleteWhich(){
-		$whatId = $_POST['id'];
-		$whichName = $_POST['name'];
-		$result = Whats::updateWhat(array('whichs.$.status' => '0'),array('_id' => new \MongoId($whatId),'whichs' => array('$elemMatch' => array('name' => $whichName))));
-		if($result)
-		{
-			return '1';
-		}
-		else
-		{
-			return '0';
-		}
-	}
 
 	public function createHow(){
 		$howName = $_POST['name'];
@@ -211,7 +216,7 @@ class AdminController extends \lithium\action\Controller
 		$whatId = $_POST['id'];
 		$whichName = $_POST['name'];
 		$whichOldName = $_POST['oldName'];
-		$result = Whats::updateWhat(array('whichs.$.name' => $whichName),array('_id' => new \MongoId($whatId),'whichs' => array('$elemMatch' => array('name' => $whichName))));
+		$result = Whats::updateWhat(array('whichs.$.name' => $whichName),array('_id' => new \MongoId($whatId),'whichs' => array('$elemMatch' => array('name' => $whichOldName))));
 		if($result)
 		{
 			return '1';
@@ -227,6 +232,67 @@ class AdminController extends \lithium\action\Controller
 		$whatName = $_POST['whatname'];
 		$result = Whats::updateWhat(array('$push' => array('whichs' => array('name' => $whichName,'status' => '1'))), array('name' => $whatName));
 
+		if($result)
+		{
+			return '1';
+		}
+		else
+		{
+			return '0';
+		}
+	}
+	
+	
+	public function deleteWhich(){
+		$whatId = $_POST['id'];
+		$whichName = $_POST['name'];
+		$result = Whats::updateWhat(array('whichs.$.status' => '0'),array('_id' => new \MongoId($whatId),'whichs' => array('$elemMatch' => array('name' => $whichName))));
+		if($result)
+		{
+			return '1';
+		}
+		else
+		{
+			return '0';
+		}
+	}
+	
+	
+	public function editWhere(){
+		$whatId = $_POST['id'];
+		$whereName = $_POST['name'];
+		$whereOldName = $_POST['oldName'];
+		$result = Whats::updateWhat(array('wheres.$.name' => $whereName),array('_id' => new \MongoId($whatId),'wheres' => array('$elemMatch' => array('name' => $whereOldName))));
+		if($result)
+		{
+			return '1';
+		}
+		else
+		{
+			return '0';
+		}
+	}
+	
+	public function createWhere(){
+		$whereName = $_POST['name'];
+		$whatName = $_POST['whatname'];
+		$result = Whats::updateWhat(array('$push' => array('wheres' => array('name' => $whereName,'status' => '1'))), array('name' => $whatName));
+
+		if($result)
+		{
+			return '1';
+		}
+		else
+		{
+			return '0';
+		}
+	}
+	
+	
+	public function deleteWhere(){
+		$whatId = $_POST['id'];
+		$whereName = $_POST['name'];
+		$result = Whats::updateWhat(array('wheres.$.status' => '0'),array('_id' => new \MongoId($whatId),'wheres' => array('$elemMatch' => array('name' => $whereName))));
 		if($result)
 		{
 			return '1';
